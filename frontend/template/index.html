@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Облачный сервис</title>
+</head>
+<body>
+    <style>
+*{
+    margin:0;
+    padding:0;
+}
+.header-nav{
+    width:100%;
+    height:50px;
+    background-color: rgb(255, 255, 255);
+    border-bottom: 2px solid black;
+}
+/* Вспомогательный контейнер для открытия формы отправки данных */
+#axiliation-container{
+    display: flex;
+    justify-content: right;
+    width:100%;
+    height:100%;
+    pointer-events: auto;
+}
+/*Кнопка открытия формы отправки данных*/
+#open-form-button{
+    width:10%;
+    height:100%;
+    background-color: black;
+    color:white;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border: none;
+    font-size:14px;
+    pointer-events: all;
+}
+.form-container{
+  position: relative;
+  bottom:50%;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 0.5em;
+  font: 1.2em sans-serif;
+  width:300px;
+  height: 300px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.button-container{
+    justify-content: space-between;
+    display:flex;
+    width:100%;
+    height:100%;
+    position:relative;
+    top:0%;
+}
+#add-button{
+    display:flex;
+    background-color: rgb(0, 0, 0);
+    width: 100%;
+    height:100%;
+    align-items: center;
+    color:white;
+    border-radius: 20px;
+    border: none;
+    pointer-events: all;
+}
+#close-modal{
+    display:o;
+    background-color: transparent;
+    width: 10   0%;
+    height:100%;
+    border: none;
+    pointer-events: all;
+}
+#full-container{
+    width: 20%;
+    height:80%;
+    border: none;
+}
+#input-place{
+    width:100%;
+    height:100%;
+    padding: 10px;
+}
+    </style>
+    <nav class="header-nav">
+        <div id="axiliation-container">
+            <button id="open-form-button">Открыть форму</button>           
+        </div>
+    </nav>
+    <center><form id="form-container" class="form-container">
+        <div class="full-container">
+            <input id="input-place" type="text" placeholder="Ваш ИИН"/>
+        <div class="button-container">
+        <button id="close-modal">
+            Закрыть
+        </button>
+        <button id="add-button">
+            Добавить
+        </button>
+        </div>
+         </div>
+    </form></center>
+    <!----Открытие модалки для данных-->
+    <script>
+        function OpenModal(){
+        var openButton = document.getElementById("open-form-button")
+        var closeButton = document.getElementById("close-modal")
+        var formContainer = document.getElementById("form-container")
+        //Рендер модалки для открытия страницы
+        openButton.addEventListener("click", (event)=>{
+            formContainer.style.display = "flex"
+        })
+        closeButton.addEventListener("click", (event)=>{
+            formContainer.style.display = "none"
+        })
+    }
+    OpenModal()
+    function PostData() {
+            var inputContainer = document.getElementById("input-place")
+            var sendButton = document.getElementById("add-button")
+            var api = "http://localhost:10000/api/iin"
+            sendButton.addEventListener("click", (event)=>{
+                const response = fetch(api, {
+                    method: "POST",
+                    body: JSON.stringify({ iin: api }),
+                })
+                if (!response.ok){
+                    console.log("Не удалось отправить данные JSON")
+                }  
+            })
+        }
+    PostData()
+    </script>
+</body>
+</html>
