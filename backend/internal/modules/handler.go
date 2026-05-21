@@ -22,7 +22,6 @@ func GetIINData(ctx *gin.Context, conn *sql.DB) {
 	if err != nil {
 		log.Println("Нельзя вводить символы")
 		ctx.JSON(400, gin.H{"status": "error", "details": err.Error()})
-		return
 	}
 
 	//Пробрасывание данных с безопасным контекстом
@@ -37,17 +36,17 @@ func GetIINData(ctx *gin.Context, conn *sql.DB) {
 		return
 	}
 }
-func DataRead(ctx *gin.Context, conn *sql.DB) {
-	rows, err := conn.QueryContext(ctx, "SELECT * FROM people_iin1")
-	if err != nil {
-		log.Println("Не удалось взять данные из базы:", err)
-		return
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var dataIIN model.IINModel
-		if err := rows.Scan(&dataIIN.ID, &dataIIN.Iin, dataIIN.Created_at); err != nil {
-			ctx.JSON(200, gin.H{"data": dataIIN})
-		}
-	}
-}
+
+// func DataRead(ctx *gin.Context, conn *sql.DB) {
+// 	rows, err := conn.QueryContext(ctx, "SELECT * FROM people_iin1")
+// 	if err != nil {
+// 		log.Println("Не удалось взять данные из базы:", err)
+// 		return
+// 	}
+// 	defer rows.Close()
+// 	for rows.Next() {
+// 		var dataIIN model.IINModel
+// 		if err := rows.Scan(&dataIIN.ID, &dataIIN.Iin, dataIIN.Created_at); err != nil {
+// 			ctx.JSON(200, gin.H{"data": dataIIN})
+// 		}
+// 	}

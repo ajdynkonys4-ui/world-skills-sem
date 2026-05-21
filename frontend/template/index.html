@@ -192,17 +192,6 @@ tbody > tr:nth-of-type(even) {
             })
         }
     PostData()
-function GetText() {
-    var api = "http://localhost:10000/"
-    const response = fetch(api, {
-        method: "GET",
-    })
-        if (!response.ok){
-            console.log("Не удалось принять данные")
-    }  
-    console.log(response)
-}
-    GetText()
     </script>
 </body>
 </html>

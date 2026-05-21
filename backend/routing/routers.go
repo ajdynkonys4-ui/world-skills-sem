@@ -17,7 +17,4 @@ func Routers(serv *gin.Engine, conn *sql.DB) {
 	serv.POST("/api/iin", func(ctx *gin.Context) {
 		modules.GetIINData(ctx, conn) //Роут на взятие ИИН
 	})
-	serv.GET("/", func(ctx *gin.Context) {
-		modules.GetIINData(ctx, conn) //Роут на взятие ИИН
-	})
 }
