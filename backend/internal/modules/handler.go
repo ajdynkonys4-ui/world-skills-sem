@@ -17,7 +17,14 @@ func GetIINData(ctx *gin.Context, conn *sql.DB) {
 		log.Println("Не удалось распарсить данные:", err)
 		return
 	}
-	iin, _ := strconv.Atoi(dataIIN.Iin)
+	//Добавления ИИН в код
+	iin, err := strconv.Atoi(dataIIN.Iin)
+	if err != nil {
+		log.Println("Нельзя вводить символы")
+		ctx.JSON(400, gin.H{"status": "error", "details": err.Error()})
+		return
+	}
+
 	//Пробрасывание данных с безопасным контекстом
 	_, err = conn.ExecContext(ctx, "INSERT INTO people_iin1 (iin_value, created_at) VALUES ($1, $2)", iin, time.Now())
 	if err != nil {
@@ -27,5 +34,20 @@ func GetIINData(ctx *gin.Context, conn *sql.DB) {
 	}
 	if err == nil {
 		log.Println("Получилось добавить данные в базу")
+		return
+	}
+}
+func DataRead(ctx *gin.Context, conn *sql.DB) {
+	rows, err := conn.QueryContext(ctx, "SELECT * FROM people_iin1")
+	if err != nil {
+		log.Println("Не удалось взять данные из базы:", err)
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var dataIIN model.IINModel
+		if err := rows.Scan(&dataIIN.ID, &dataIIN.Iin, dataIIN.Created_at); err != nil {
+			ctx.JSON(200, gin.H{"data": dataIIN})
+		}
 	}
 }

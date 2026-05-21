@@ -1,5 +1,9 @@
 package model
 
+import "time"
+
 type IINModel struct {
-	Iin string `json:"iin"`
+	ID         int       `json:"id"`
+	Iin        string    `json:"iin"`
+	Created_at time.Time `json:"time"`
 }

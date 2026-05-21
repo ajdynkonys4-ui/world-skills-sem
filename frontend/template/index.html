@@ -85,12 +85,70 @@
     height:100%;
     padding: 10px;
 }
+table {
+  border-collapse: collapse;
+  border: 2px solid rgb(140 140 140);
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+thead,
+tfoot {
+  background-color: rgb(228 240 245);
+}
+
+th,
+td {
+  border: 1px solid rgb(160 160 160);
+  padding: 8px 10px;
+}
+
+td:last-of-type {
+  text-align: center;
+}
+
+tbody > tr:nth-of-type(even) {
+  background-color: rgb(237 238 242);
+}
     </style>
     <nav class="header-nav">
         <div id="axiliation-container">
             <button id="open-form-button">Открыть форму</button>           
         </div>
     </nav>
+    <div>
+        <table>
+ <center> <caption>
+   Таблица данных
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">ИИН</th>
+      <th scope="col">Создано</th>
+    </tr>
+  </thead>
+  <tbody id="tbody-container">
+    <tr>
+      <th scope="row"></th>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td></td>
+      <td></td>
+    </tr>
+    
+  </tbody>
+</table></center>
+
+    </div>
     <center><form id="form-container" class="form-container">
         <div class="full-container">
             <input id="input-place" type="text" placeholder="Ваш ИИН"/>
@@ -134,6 +192,17 @@
             })
         }
     PostData()
+function GetText() {
+    var api = "http://localhost:10000/"
+    const response = fetch(api, {
+        method: "GET",
+    })
+        if (!response.ok){
+            console.log("Не удалось принять данные")
+    }  
+    console.log(response)
+}
+    GetText()
     </script>
 </body>
 </html>
