@@ -13,8 +13,10 @@ func Routers(serv *gin.Engine, conn *sql.DB) {
 		ctx.HTML(200, "index.html", gin.H{
 			"title": "website",
 		})
+		modules.DataRead(ctx, conn)
 	})
 	serv.POST("/api/iin", func(ctx *gin.Context) {
 		modules.GetIINData(ctx, conn) //Роут на взятие ИИН
 	})
+
 }

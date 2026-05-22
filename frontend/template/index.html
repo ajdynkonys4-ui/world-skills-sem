@@ -7,87 +7,48 @@
 </head>
 <body>
     <style>
-*{
+
+body{
     margin:0;
     padding:0;
-}
-.header-nav{
     width:100%;
-    height:50px;
-    background-color: rgb(255, 255, 255);
-    border-bottom: 2px solid black;
+    height:100%;
 }
-/* Вспомогательный контейнер для открытия формы отправки данных */
-#axiliation-container{
+.full-container{
+    margin-top:20px;
+    margin-left:20px;
+    position: relative;
     display: flex;
-    justify-content: right;
-    width:100%;
+    width: 25%;
     height:100%;
-    pointer-events: auto;
+    border: none;
+    justify-content: space-between;
+    align-items:flex-start;
 }
-/*Кнопка открытия формы отправки данных*/
-#open-form-button{
-    width:10%;
-    height:100%;
+.add-button{
+    display: flex;
+    padding: 10px;
+    border-radius: 50px;
+    border:none;
     background-color: black;
     color:white;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    border: none;
-    font-size:14px;
-    pointer-events: all;
+     cursor: pointer;
 }
-.form-container{
-  position: relative;
-  bottom:50%;
-  border: 2px solid rgb(0, 0, 0);
-  border-radius: 0.5em;
-  font: 1.2em sans-serif;
-  width:300px;
-  height: 300px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-.button-container{
-    justify-content: space-between;
-    display:flex;
-    width:100%;
-    height:100%;
-    position:relative;
-    top:0%;
-}
-#add-button{
-    display:flex;
-    background-color: rgb(0, 0, 0);
-    width: 100%;
-    height:100%;
-    align-items: center;
-    color:white;
-    border-radius: 20px;
-    border: none;
-    pointer-events: all;
-}
-#close-modal{
-    display:o;
-    background-color: transparent;
-    width: 10   0%;
-    height:100%;
-    border: none;
-    pointer-events: all;
-}
-#full-container{
-    width: 20%;
-    height:80%;
-    border: none;
-}
-#input-place{
-    width:100%;
-    height:100%;
+.input-place{
+    display: flex;
     padding: 10px;
+    border-radius: 50px;
+    border:1px solid black;
+}
+.table-container{
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
 table {
+  margin-top:20px;
   border-collapse: collapse;
-  border: 2px solid rgb(140 140 140);
+  border: 2px solid rgb(29, 28, 28);
   font-family: sans-serif;
   font-size: 0.8rem;
   letter-spacing: 1px;
@@ -110,88 +71,86 @@ td:last-of-type {
 tbody > tr:nth-of-type(even) {
   background-color: rgb(237 238 242);
 }
-    </style>
-    <nav class="header-nav">
-        <div id="axiliation-container">
-            <button id="open-form-button">Открыть форму</button>           
+.log{
+    display:flex;
+    color:red;
+    font-size:12px;
+}
+</style>
+        <div class="full-container">
+            <div>
+                <input id="input-place" class="input-place" type="text" placeholder="Ваш ИИН"/>
+                <p id="log" class="log"></p>
+            </div>
+            <div class="button-container">
+                <input id="add-button" class="add-button" type="reset" value="Добавить" accesskey="r" />
+            </div>
         </div>
-    </nav>
-    <div>
-        <table>
- <center> <caption>
-   Таблица данных
-  </caption>
+<div class="table-container">
+<table>
   <thead>
     <tr>
       <th scope="col">ID</th>
       <th scope="col">ИИН</th>
+      <th scope="col">Статус</th>
       <th scope="col">Создано</th>
     </tr>
   </thead>
   <tbody id="tbody-container">
-    <tr>
-      <th scope="row"></th>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <th scope="row"></th>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <th scope="row"></th>
-      <td></td>
-      <td></td>
-    </tr>
-    
   </tbody>
-</table></center>
-
-    </div>
-    <center><form id="form-container" class="form-container">
-        <div class="full-container">
-            <input id="input-place" type="text" placeholder="Ваш ИИН"/>
-        <div class="button-container">
-        <button id="close-modal">
-            Закрыть
-        </button>
-        <button id="add-button">
-            Добавить
-        </button>
-        </div>
-         </div>
-    </form></center>
+</table>
+</div>
     <!----Открытие модалки для данных-->
     <script>
-        function OpenModal(){
-        var openButton = document.getElementById("open-form-button")
-        var closeButton = document.getElementById("close-modal")
-        var formContainer = document.getElementById("form-container")
-        //Рендер модалки для открытия страницы
-        openButton.addEventListener("click", (event)=>{
-            formContainer.style.display = "flex"
-        })
-        closeButton.addEventListener("click", (event)=>{
-            formContainer.style.display = "none"
-        })
-    }
-    OpenModal()
+    //Отдача ИИН 
     function PostData() {
             var inputContainer = document.getElementById("input-place")
             var sendButton = document.getElementById("add-button")
             var api = "http://localhost:10000/api/iin"
             sendButton.addEventListener("click", (event)=>{
-                const response = fetch(api, {
+                try{
+                    const response = fetch(api, {
                     method: "POST",
-                    body: JSON.stringify({ iin: api }),
+                    body: JSON.stringify({ iin: inputContainer.value, is_valid: true}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                
                 })
-                if (!response.ok){
-                    console.log("Не удалось отправить данные JSON")
-                }  
+                window.location.reload();
+                }catch(error){
+                    console.log("Ошибка:", error)
+                }
             })
+            inputContainer.value = ""
         }
+    
     PostData()
+    // //Включение 
+    async function TableInfo () {
+        var tableID = document.getElementById("tbody-container")
+        try{
+            const response = await fetch("http://localhost:10000/")
+            const data = await response.json()
+            console.log(data)
+        }catch(error){
+            console.log("Не удалось получить данные от фронта", error)
+        }
+    }
+    TableInfo()
+
+    function Validation(){
+        var inputData = document.getElementById("input-place")
+        var log = document.getElementById("log")
+       inputData.addEventListener("keyup", () => {
+        if (inputData.value.length > 12) {
+            log.innerText = `ИИН не может превышать 12 символов`
+        }else {
+            log.innerText = ''
+        }
+       });
+    }
+    Validation()
     </script>
 </body>
 </html>
